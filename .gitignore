@@ -4,6 +4,12 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+data/
+extensions/
+server.properties
+publish.sh
+secring.gpg
+
 ### IntelliJ IDEA ###
 .idea/
 *.iws
