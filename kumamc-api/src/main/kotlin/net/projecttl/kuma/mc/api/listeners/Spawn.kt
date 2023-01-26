@@ -11,7 +11,11 @@ import net.minestom.server.event.player.PlayerMoveEvent
 import net.minestom.server.event.player.PlayerSpawnEvent
 import net.minestom.server.item.firework.FireworkEffect
 import net.minestom.server.item.firework.FireworkEffectType
+import net.projecttl.kuma.mc.api.instance
 import net.projecttl.kuma.mc.api.utils.Area
+import net.projecttl.kuma.mc.api.utils.AreaUtils
+import net.projecttl.kuma.mc.api.utils.showFireworkWithDuration
+import net.projecttl.kuma.mc.api.utils.toMini
 import kotlin.random.Random
 
 data class MapData(val spawn: Pos, val area: Area, val height: Int)
