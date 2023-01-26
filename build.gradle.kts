@@ -32,7 +32,6 @@ subprojects {
         implementation(kotlin("reflect"))
         implementation("org.xerial:sqlite-jdbc:3.40.0.0")
         implementation("com.google.guava:guava:31.1-jre")
-        implementation("com.github.EmortalMC:NBStom:latest")
         implementation("org.jetbrains.exposed:exposed-core:0.41.1")
         implementation("org.jetbrains.exposed:exposed-jdbc:0.41.1")
         implementation("net.kyori:adventure-text-minimessage:4.12.0")
