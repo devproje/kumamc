@@ -9,20 +9,18 @@ import net.minestom.server.event.EventNode
 import net.minestom.server.event.player.PlayerLoginEvent
 import net.minestom.server.event.player.PlayerMoveEvent
 import net.minestom.server.event.player.PlayerSpawnEvent
-import net.minestom.server.instance.InstanceContainer
 import net.minestom.server.item.firework.FireworkEffect
 import net.minestom.server.item.firework.FireworkEffectType
 import net.projecttl.kuma.mc.api.utils.Area
-import net.projecttl.kuma.mc.api.utils.AreaUtils
-import net.projecttl.kuma.mc.api.utils.showFireworkWithDuration
-import net.projecttl.kuma.mc.api.utils.toMini
 import kotlin.random.Random
 
-class Spawn(val instance: InstanceContainer, val spawn: Pos, val area: Area) {
+data class MapData(val spawn: Pos, val area: Area, val height: Int)
+
+class Spawn(val data: MapData) {
     fun run(node: EventNode<Event>) {
         node.addListener(PlayerLoginEvent::class.java) { event ->
             event.setSpawningInstance(instance)
-            event.player.respawnPoint = spawn
+            event.player.respawnPoint = data.spawn
         }
 
         val messages = listOf(
@@ -57,16 +55,16 @@ class Spawn(val instance: InstanceContainer, val spawn: Pos, val area: Area) {
                     listOf(Color(Random.nextInt(256), 255, 255))
                 )
             )
-            event.spawnInstance.players.showFireworkWithDuration(instance, spawn, effects)
+            event.spawnInstance.players.showFireworkWithDuration(instance, data.spawn, effects)
         }
 
         node.addListener(PlayerMoveEvent::class.java) { event ->
-            if (event.newPosition.y <= 50) {
-                event.newPosition = spawn
+            if (event.newPosition.y <= data.height) {
+                event.newPosition = data.spawn
                 return@addListener
             }
 
-            AreaUtils(area = area, height = false).apply {
+            AreaUtils(area = data.area, height = false).apply {
                 if (!event.newPosition.inArea()) {
                     event.isCancelled = true
                     return@addListener

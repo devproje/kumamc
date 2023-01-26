@@ -6,13 +6,11 @@ import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
 import net.minestom.server.event.player.PlayerCommandEvent
 import net.minestom.server.instance.AnvilLoader
-import net.minestom.server.instance.InstanceContainer
 import net.minestom.server.utils.NamespaceID
 import net.minestom.server.world.DimensionType
 import net.projecttl.kuma.mc.Core
+import net.projecttl.kuma.mc.api.instance
 import net.projecttl.kuma.mc.logger
-
-lateinit var instance: InstanceContainer
 
 object Listener {
     fun run(node: EventNode<Event>, core: Core) {

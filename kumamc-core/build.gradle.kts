@@ -6,7 +6,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":kumamc-api"))
+    api(project(":kumamc-api"))
 }
 
 tasks {

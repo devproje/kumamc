@@ -11,7 +11,7 @@ import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
 import net.minestom.server.event.player.PlayerEntityInteractEvent
 import net.projecttl.kuma.mc.api.utils.moveServer
-import net.projecttl.kuma.mc.listeners.instance
+import net.projecttl.kuma.mc.api.instance
 import java.util.*
 
 data class ServerNPC(

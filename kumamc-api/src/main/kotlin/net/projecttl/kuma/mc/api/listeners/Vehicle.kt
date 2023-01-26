@@ -5,7 +5,6 @@ import net.minestom.server.event.EventNode
 import net.minestom.server.event.player.PlayerMoveEvent
 import net.projecttl.kuma.mc.api.utils.AreaUtils
 import net.projecttl.kuma.mc.api.utils.VehicleData
-
 class Vehicle(private val traffic: List<VehicleData>, val obj: String) {
     fun run(node: EventNode<Event>) {
         node.addListener(PlayerMoveEvent::class.java) { event ->
