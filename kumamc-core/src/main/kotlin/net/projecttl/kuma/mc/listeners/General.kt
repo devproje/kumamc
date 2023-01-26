@@ -4,10 +4,7 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import net.minestom.server.MinecraftServer
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
-import net.minestom.server.event.inventory.InventoryPreClickEvent
-import net.minestom.server.event.item.ItemDropEvent
 import net.minestom.server.event.player.PlayerCommandEvent
-import net.minestom.server.event.player.PlayerSwapItemEvent
 import net.minestom.server.instance.AnvilLoader
 import net.minestom.server.instance.InstanceContainer
 import net.minestom.server.utils.NamespaceID
@@ -33,18 +30,6 @@ object Listener {
         node.addListener(PlayerCommandEvent::class.java) { event ->
             val name = PlainTextComponentSerializer.plainText().serialize(event.player.name)
             logger.info("$name using command: /${event.command}")
-        }
-
-        node.addListener(InventoryPreClickEvent::class.java) { event ->
-            event.isCancelled = true
-        }
-
-        node.addListener(ItemDropEvent::class.java) { event ->
-            event.isCancelled = true
-        }
-
-        node.addListener(PlayerSwapItemEvent::class.java) { event ->
-            event.isCancelled = true
         }
     }
 }

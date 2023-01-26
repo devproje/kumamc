@@ -9,13 +9,13 @@ import net.minestom.server.event.EventNode
 import net.minestom.server.event.player.PlayerLoginEvent
 import net.minestom.server.event.player.PlayerMoveEvent
 import net.minestom.server.event.player.PlayerSpawnEvent
+import net.minestom.server.instance.InstanceContainer
 import net.minestom.server.item.firework.FireworkEffect
 import net.minestom.server.item.firework.FireworkEffectType
 import net.projecttl.kuma.mc.api.utils.Area
 import net.projecttl.kuma.mc.api.utils.AreaUtils
 import net.projecttl.kuma.mc.api.utils.showFireworkWithDuration
 import net.projecttl.kuma.mc.api.utils.toMini
-import net.minestom.server.instance.InstanceContainer
 import kotlin.random.Random
 
 class Spawn(val instance: InstanceContainer, val spawn: Pos, val area: Area) {

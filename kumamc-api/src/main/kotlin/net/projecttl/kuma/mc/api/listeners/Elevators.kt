@@ -4,13 +4,36 @@ import net.minestom.server.MinecraftServer
 import net.minestom.server.entity.Player
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
+import net.minestom.server.event.inventory.InventoryPreClickEvent
+import net.minestom.server.event.item.ItemDropEvent
 import net.minestom.server.event.player.PlayerMoveEvent
+import net.minestom.server.event.player.PlayerSwapItemEvent
 import net.minestom.server.event.player.PlayerUseItemEvent
 import net.minestom.server.item.ItemStack
 import net.projecttl.kuma.mc.api.utils.AreaUtils
 import net.projecttl.kuma.mc.api.utils.Elevator
 
 class Elevators(private val evInfo: MutableList<Elevator>) {
+    private fun action(player: Player, act: (Elevator) -> Unit): Boolean {
+        evInfo.forEach { ev ->
+            ev.apply {
+                try {
+                    val area = player.current()
+                    AreaUtils(area, true).apply {
+                        if (player.inArea()) {
+                            act(ev)
+                            return true
+                        }
+                    }
+                } catch (ex: Exception) {
+                    MinecraftServer.getExceptionManager().handleException(ex)
+                }
+            }
+        }
+
+        return false
+    }
+
     fun run(node: EventNode<Event>) {
         fun Player.itemExist(): Boolean {
             if (!inventory.getItemStack(7).isAir && !inventory.getItemStack(8).isAir) {
@@ -30,44 +53,48 @@ class Elevators(private val evInfo: MutableList<Elevator>) {
         }
 
         node.addListener(PlayerMoveEvent::class.java) { event ->
-            evInfo.forEach { ev ->
+            val act = action(event.player) { ev ->
                 ev.apply {
-                    try {
-                        val area = event.player.current()
-                        AreaUtils(area, true).apply {
-                            if (event.player.inArea()) {
-                                event.player.swapItem()
-                                return@addListener
-                            }
-                        }
-                    } catch (ex: NullPointerException) {
-                        MinecraftServer.getExceptionManager().handleException(ex)
-                    } catch (ex: NoSuchElementException) {
-                        MinecraftServer.getExceptionManager().handleException(ex)
-                    }
+                    event.player.swapItem()
                 }
             }
 
-            event.player.removeItem()
+            if (!act) {
+                event.player.removeItem()
+            }
         }
 
         node.addListener(PlayerUseItemEvent::class.java) { event ->
-            evInfo.forEach { ev ->
+            action(event.player) { ev ->
                 ev.apply {
-                    try {
-                        when (event.itemStack.displayName) {
-                            upper.displayName -> {
-                                event.player.next()
-                            }
-
-                            down.displayName -> {
-                                event.player.prev()
-                            }
+                    when (event.itemStack.displayName) {
+                        upper.displayName -> {
+                            event.player.next()
                         }
-                    } catch (ex: NoSuchElementException) {
-                        MinecraftServer.getExceptionManager().handleException(ex)
+
+                        down.displayName -> {
+                            event.player.prev()
+                        }
                     }
                 }
+            }
+        }
+
+        node.addListener(InventoryPreClickEvent::class.java) { event ->
+            action(event.player) {
+                event.isCancelled = true
+            }
+        }
+
+        node.addListener(ItemDropEvent::class.java) { event ->
+            action(event.player) {
+                event.isCancelled = true
+            }
+        }
+
+        node.addListener(PlayerSwapItemEvent::class.java) { event ->
+            action(event.player) {
+                event.isCancelled = true
             }
         }
     }
