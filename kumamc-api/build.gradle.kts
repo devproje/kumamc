@@ -50,7 +50,7 @@ publishing {
             pom {
                 name.set(rootProject.name)
                 description.set("This is custom minecraft minestom server Project Edition")
-                url.set("https://github.com/project-official/kumamc")
+                url.set("https://github.com/devproje/kumamc")
                 licenses {
                     license {
                         name.set("GNU General Public License Version 3")
@@ -65,9 +65,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("scm:git:https://github.com/project-official/kumamc.git")
-                    developerConnection.set("scm:git:https://github.com/project-official/kumamc.git")
-                    url.set("https://github.com/project-official/kumamc.git")
+                    connection.set("scm:git:https://github.com/devproje/kumamc.git")
+                    developerConnection.set("scm:git:https://github.com/devproje/kumamc.git")
+                    url.set("https://github.com/devproje/kumamc.git")
                 }
             }
         }
