@@ -85,7 +85,5 @@ class Elevator(private val floor: ArrayList<Area>) {
         }
     }
 
-    companion object {
-
-    }
+    companion object
 }

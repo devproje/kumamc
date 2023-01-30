@@ -14,7 +14,7 @@ import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
 import net.minestom.server.event.player.PlayerEntityInteractEvent
 import net.projecttl.kuma.mc.api.instance
-import java.util.UUID
+import java.util.*
 
 /**
  * @param uuid      the uuid is NPC random id
@@ -30,18 +30,18 @@ data class NPCData(
     val name: Component,
     val skin: UUID,
     val loc: Pos,
-    val handler: (PlayerEntityInteractEvent) -> Unit
+    val handler: ((event: PlayerEntityInteractEvent) -> Unit)?
 )
 
 @OptIn(DelicateCoroutinesApi::class)
 class NPCTask(private val npc: NPCData) {
     private fun handler(node: EventNode<Event>) {
-        node.addListener(PlayerEntityInteractEvent::class.java) {
-            if (it.entity.name != npc.name) {
+        node.addListener(PlayerEntityInteractEvent::class.java) { event ->
+            if (event.entity.name != npc.name) {
                 return@addListener
             }
 
-            npc.handler
+            npc.handler?.invoke(event)
         }
     }
 

@@ -29,13 +29,12 @@ var logger: ComponentLogger = MinecraftServer.LOGGER
 lateinit var owner: UUID
 
 suspend fun main() {
-    val core = Core()
-    core.registerHandler()
-    core.databaseInit()
-    core.modeInit()
-    core.proxyInit()
-    core.loadListener()
-    core.ownerCheck()
+    val core = Core().also {
+        it.dbInit()
+        it.mcInit()
+        it.serverInit()
+    }
+
     core.run()
 }
 
@@ -63,15 +62,25 @@ class Core {
         return props
     }
 
-    fun registerHandler() {
+    fun mcInit() {
         MinecraftServer.getBlockManager().apply {
             registerHandler(NamespaceID.from(Key.key("minecraft:sign"))) { SignHandler() }
             registerHandler(NamespaceID.from(Key.key("minecraft:skull"))) { SkullHandler() }
             registerHandler(NamespaceID.from(Key.key("minecraft:campfire"))) { CampfireHandler() }
         }
+
+        Listener.run(handler, this)
+        when (props().getProperty("default-tab-list")) {
+            "true" -> TabList.run()
+            "false" -> return
+            else -> {
+                logger.warn(Component.text("you must include boolean type for `default-tab-list` option"))
+                return
+            }
+        }
     }
 
-    fun databaseInit() {
+    fun dbInit() {
         val dataDir = Path.of("./data")
         if (!Files.exists(dataDir)) {
             Files.createDirectory(dataDir)
@@ -88,7 +97,7 @@ class Core {
         }
     }
 
-    fun modeInit() {
+    fun serverInit() {
         try {
             when (props().getProperty("online-mode")) {
                 "true" -> MojangAuth.init()
@@ -99,9 +108,7 @@ class Core {
         } catch (e: Exception) {
             MinecraftServer.getExceptionManager().handleException(e)
         }
-    }
 
-    fun proxyInit() {
         val secret = props().getProperty("velocity-secret")
         when (props().getProperty("proxy-type")) {
             "none" -> {}
@@ -122,21 +129,7 @@ class Core {
 
             else -> throw IllegalStateException()
         }
-    }
 
-    fun loadListener() {
-        Listener.run(handler, this)
-        when (props().getProperty("default-tab-list")) {
-            "true" -> TabList.run()
-            "false" -> return
-            else -> {
-                logger.warn(Component.text("you must include boolean type for `default-tab-list` option"))
-                return
-            }
-        }
-    }
-
-    fun ownerCheck() {
         if (props().getProperty("owner-uuid") != null) {
             if (props().getProperty("owner-uuid") != "") {
                 owner = UUID.fromString(props().getProperty("owner-uuid"))

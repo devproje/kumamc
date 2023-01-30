@@ -47,7 +47,6 @@ class Spawn(val data: MapData) {
 
             event.spawnInstance.players.forEach { player ->
                 player.sendMessage(msg)
-                player.sendMessage("<red>만약 NPC가 겹쳐 보이거나 스폰 위치에 남아 있다면 재접속을 해주시기 바랍니다.<reset>".toMini())
             }
 
             val effects = mutableListOf(
