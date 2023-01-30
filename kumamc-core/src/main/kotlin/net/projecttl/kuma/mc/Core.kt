@@ -3,6 +3,7 @@ package net.projecttl.kuma.mc
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import net.kyori.adventure.key.Key
+import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger
 import net.minestom.server.MinecraftServer
 import net.minestom.server.extras.MojangAuth
@@ -14,6 +15,7 @@ import net.projecttl.kuma.mc.handler.CampfireHandler
 import net.projecttl.kuma.mc.handler.SignHandler
 import net.projecttl.kuma.mc.handler.SkullHandler
 import net.projecttl.kuma.mc.listeners.Listener
+import net.projecttl.kuma.mc.tasks.TabList
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -124,6 +126,14 @@ class Core {
 
     fun loadListener() {
         Listener.run(handler, this)
+        when (props().getProperty("default-tab-list")) {
+            "true" -> TabList.run()
+            "false" -> return
+            else -> {
+                logger.warn(Component.text("you must include boolean type for `default-tab-list` option"))
+                return
+            }
+        }
     }
 
     fun ownerCheck() {
