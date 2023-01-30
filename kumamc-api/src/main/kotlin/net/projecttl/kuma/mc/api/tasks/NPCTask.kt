@@ -13,7 +13,7 @@ import net.minestom.server.entity.fakeplayer.FakePlayer
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
 import net.minestom.server.event.player.PlayerEntityInteractEvent
-import net.projecttl.kuma.mc.api.instance
+import net.projecttl.kuma.mc.instance
 import java.util.*
 
 /**

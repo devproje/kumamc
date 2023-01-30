@@ -9,13 +9,14 @@ import net.minestom.server.MinecraftServer
 import net.minestom.server.extras.MojangAuth
 import net.minestom.server.extras.bungee.BungeeCordProxy
 import net.minestom.server.extras.velocity.VelocityProxy
+import net.minestom.server.instance.InstanceContainer
 import net.minestom.server.utils.NamespaceID
-import net.projecttl.kuma.mc.api.utils.perm.model.PermData
 import net.projecttl.kuma.mc.handler.CampfireHandler
 import net.projecttl.kuma.mc.handler.SignHandler
 import net.projecttl.kuma.mc.handler.SkullHandler
 import net.projecttl.kuma.mc.listeners.Listener
 import net.projecttl.kuma.mc.tasks.TabList
+import net.projecttl.kuma.mc.utils.perm.model.PermData
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -24,22 +25,13 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
 
-private var configPath = Path.of("./server.properties")
 var logger: ComponentLogger = MinecraftServer.LOGGER
+lateinit var instance: InstanceContainer
 lateinit var owner: UUID
-
-suspend fun main() {
-    val core = Core().also {
-        it.dbInit()
-        it.mcInit()
-        it.serverInit()
-    }
-
-    core.run()
-}
 
 class Core {
     private val server = MinecraftServer.init()
+    private var configPath = Path.of("./server.properties")
     private val handler = MinecraftServer.getGlobalEventHandler()
 
     fun props(): Properties {

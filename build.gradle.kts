@@ -1,14 +1,12 @@
 plugins {
-    id("com.github.johnrengelman.shadow") version "7.1.2"
     kotlin("jvm") version "1.8.0"
 }
 
 group = "net.projecttl"
-version = "1.0.0-beta.4"
+version = "1.0.0-beta.5"
 
 allprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(plugin = "com.github.johnrengelman.shadow")
 
     repositories {
         mavenCentral()

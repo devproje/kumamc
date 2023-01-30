@@ -10,8 +10,8 @@ import net.minestom.server.event.player.PlayerMoveEvent
 import net.minestom.server.event.player.PlayerSwapItemEvent
 import net.minestom.server.event.player.PlayerUseItemEvent
 import net.minestom.server.item.ItemStack
-import net.projecttl.kuma.mc.api.utils.AreaUtils
-import net.projecttl.kuma.mc.api.utils.Elevator
+import net.projecttl.kuma.mc.api.AreaUtils
+import net.projecttl.kuma.mc.api.Elevator
 
 class Elevators(private val evInfo: MutableList<Elevator>) {
     private fun action(player: Player, act: (Elevator) -> Unit): Boolean {

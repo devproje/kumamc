@@ -2,6 +2,7 @@ package net.projecttl.kuma.mc.api.listeners
 
 import net.minestom.server.color.Color
 import net.minestom.server.coordinate.Pos
+import net.minestom.server.coordinate.Vec
 import net.minestom.server.entity.GameMode
 import net.minestom.server.entity.fakeplayer.FakePlayer
 import net.minestom.server.event.Event
@@ -11,14 +12,13 @@ import net.minestom.server.event.player.PlayerMoveEvent
 import net.minestom.server.event.player.PlayerSpawnEvent
 import net.minestom.server.item.firework.FireworkEffect
 import net.minestom.server.item.firework.FireworkEffectType
-import net.projecttl.kuma.mc.api.instance
-import net.projecttl.kuma.mc.api.utils.Area
-import net.projecttl.kuma.mc.api.utils.AreaUtils
-import net.projecttl.kuma.mc.api.utils.showFireworkWithDuration
-import net.projecttl.kuma.mc.api.utils.toMini
+import net.projecttl.kuma.mc.api.toMini
+import net.projecttl.kuma.mc.utils.showFireworkWithDuration
+import net.projecttl.kuma.mc.instance
+import net.projecttl.kuma.mc.utils.AreaUtils
 import kotlin.random.Random
 
-data class MapData(val spawn: Pos, val area: Area, val height: Int)
+data class MapData(val spawn: Pos, val area: Pair<Vec, Vec>, val height: Int)
 
 class Spawn(val data: MapData) {
     fun run(node: EventNode<Event>) {

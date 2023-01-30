@@ -9,7 +9,7 @@ import net.minestom.server.instance.AnvilLoader
 import net.minestom.server.utils.NamespaceID
 import net.minestom.server.world.DimensionType
 import net.projecttl.kuma.mc.Core
-import net.projecttl.kuma.mc.api.instance
+import net.projecttl.kuma.mc.instance
 import net.projecttl.kuma.mc.logger
 
 object Listener {

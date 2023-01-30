@@ -7,6 +7,10 @@ plugins {
 group = rootProject.group
 version = rootProject.version
 
+dependencies {
+    implementation(project(":kumamc-core"))
+}
+
 tasks {
     withType<Javadoc> {
         options.encoding = "UTF-8"

@@ -1,8 +1,8 @@
 package net.projecttl.kuma.mc.tasks
 
 import kotlinx.coroutines.*
-import net.projecttl.kuma.mc.api.instance
-import net.projecttl.kuma.mc.api.utils.toMini
+import net.projecttl.kuma.mc.utils.toMini
+import net.projecttl.kuma.mc.instance
 
 @OptIn(DelicateCoroutinesApi::class)
 object TabList {
