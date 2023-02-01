@@ -1,6 +1,7 @@
 package net.projecttl.kuma.mc.api
 
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.minimessage.MiniMessage
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.coordinate.Vec
 import net.minestom.server.entity.Player
@@ -14,7 +15,7 @@ import net.projecttl.kuma.mc.utils.moveServer
 import net.projecttl.kuma.mc.utils.perm.isPermed
 import net.projecttl.kuma.mc.utils.showFireworkWithDuration
 
-fun String.toMini(): Component = toMini()
+fun String.toMini(): Component = MiniMessage.miniMessage().deserialize(this)
 
 fun Player.isFly() {
     isFly()

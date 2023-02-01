@@ -1,14 +1,9 @@
 package net.projecttl.kuma.mc.api.tasks
 
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import net.minestom.server.coordinate.Pos
-import net.minestom.server.entity.Entity
-import net.minestom.server.entity.EntityType
-import net.minestom.server.entity.PlayerSkin
+import net.minestom.server.entity.*
 import net.minestom.server.entity.fakeplayer.FakePlayer
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
@@ -30,22 +25,23 @@ data class NPCData(
     val name: Component,
     val skin: UUID,
     val loc: Pos,
-    val handler: ((event: PlayerEntityInteractEvent) -> Unit)?
+    val handler: PlayerEntityInteractEvent.() -> Unit
 )
 
-@OptIn(DelicateCoroutinesApi::class)
 class NPCTask(private val npc: NPCData) {
-    private fun handler(node: EventNode<Event>) {
+    private fun registerHandler(node: EventNode<Event>) {
         node.addListener(PlayerEntityInteractEvent::class.java) { event ->
-            if (event.entity.name != npc.name) {
+            if (event.target.customName != npc.name) {
                 return@addListener
             }
 
-            npc.handler?.invoke(event)
+            npc.handler(event)
         }
     }
 
     fun run(node: EventNode<Event>) {
+        registerHandler(node)
+
         if (npc.type != EntityType.PLAYER) {
             val entity = Entity(npc.type).apply {
                 customName = npc.name
@@ -65,15 +61,13 @@ class NPCTask(private val npc: NPCData) {
             it.entityMeta.isRightLegEnabled = true
             it.entityMeta.isLeftLegEnabled = true
 
+            it.gameMode = GameMode.CREATIVE
+
             it.customName = npc.name
             it.isCustomNameVisible = true
 
             it.skin = PlayerSkin.fromUuid(npc.skin.toString())
             it.teleport(npc.loc)
-        }
-
-        GlobalScope.launch {
-            handler(node)
         }
     }
 }

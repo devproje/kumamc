@@ -1,6 +1,5 @@
 package net.projecttl.kuma.mc.api.listeners
 
-import net.minestom.server.MinecraftServer
 import net.minestom.server.entity.Player
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
@@ -26,7 +25,7 @@ class Elevators(private val evInfo: MutableList<Elevator>) {
                         }
                     }
                 } catch (ex: Exception) {
-                    MinecraftServer.getExceptionManager().handleException(ex)
+                    // IGNORE
                 }
             }
         }

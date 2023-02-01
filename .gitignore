@@ -6,6 +6,7 @@ build/
 
 data/
 extensions/
+world/
 server.properties
 publish.sh
 secring.gpg

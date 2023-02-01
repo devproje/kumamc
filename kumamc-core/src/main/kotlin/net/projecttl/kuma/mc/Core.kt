@@ -29,6 +29,16 @@ var logger: ComponentLogger = MinecraftServer.LOGGER
 lateinit var instance: InstanceContainer
 lateinit var owner: UUID
 
+suspend fun main() {
+    val core = Core().apply {
+        mcInit()
+        dbInit()
+        serverInit()
+    }
+
+    core.run()
+}
+
 class Core {
     private val server = MinecraftServer.init()
     private var configPath = Path.of("./server.properties")
@@ -122,10 +132,8 @@ class Core {
             else -> throw IllegalStateException()
         }
 
-        if (props().getProperty("owner-uuid") != null) {
-            if (props().getProperty("owner-uuid") != "") {
-                owner = UUID.fromString(props().getProperty("owner-uuid"))
-            }
+        if (props().getProperty("owner-uuid") != "") {
+            owner = UUID.fromString(props().getProperty("owner-uuid"))
         }
     }
 
