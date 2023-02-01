@@ -8,7 +8,7 @@ group = rootProject.group
 version = rootProject.version
 
 dependencies {
-    implementation(project(":kumamc-core"))
+    api(project(":kumamc-core"))
 }
 
 tasks {
