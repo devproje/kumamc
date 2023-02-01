@@ -1,10 +1,11 @@
 package net.projecttl.kuma.mc.api.tasks
 
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.entity.*
 import net.minestom.server.entity.fakeplayer.FakePlayer
+import net.minestom.server.entity.hologram.Hologram
+import net.minestom.server.entity.metadata.other.ArmorStandMeta
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
 import net.minestom.server.event.player.PlayerEntityInteractEvent
@@ -22,7 +23,7 @@ import java.util.*
 data class NPCData(
     val uuid: UUID = UUID.randomUUID(),
     val type: EntityType = EntityType.PLAYER,
-    val name: Component,
+    val name: List<Component>,
     val skin: UUID,
     val loc: Pos,
     val handler: PlayerEntityInteractEvent.() -> Unit
@@ -31,7 +32,7 @@ data class NPCData(
 class NPCTask(private val npc: NPCData) {
     private fun registerHandler(node: EventNode<Event>) {
         node.addListener(PlayerEntityInteractEvent::class.java) { event ->
-            if (event.target.customName != npc.name) {
+            if (event.target.uuid != npc.uuid) {
                 return@addListener
             }
 
@@ -39,20 +40,34 @@ class NPCTask(private val npc: NPCData) {
         }
     }
 
+    private fun getNamePosition(playerPosition: Pos, multiplier: Int): Pos {
+        return playerPosition.add(0.0, 1.8 * (multiplier + 1), 0.0)
+    }
+
     fun run(node: EventNode<Event>) {
+        val i = instance
         registerHandler(node)
 
-        if (npc.type != EntityType.PLAYER) {
-            val entity = Entity(npc.type).apply {
-                customName = npc.name
-                isCustomNameVisible = true
-            }
+        npc.name.reversed().forEachIndexed { index, name ->
+            Hologram(i, getNamePosition(npc.loc, index), name)
+        }
 
-            entity.setInstance(instance, npc.loc)
+        val passenger = Entity(EntityType.ARMOR_STAND).apply {
+            val meta = entityMeta as ArmorStandMeta
+            meta.setNotifyAboutChanges(false)
+            meta.isSmall = true
+            meta.isInvisible = true
+        }
+
+        passenger.setInstance(i)
+        passenger.isAutoViewable = true
+
+        if (npc.type != EntityType.PLAYER) {
+            Entity(npc.type).setInstance(i, npc.loc)
             return
         }
 
-        FakePlayer.initPlayer(npc.uuid, PlainTextComponentSerializer.plainText().serialize(npc.name)) {
+        FakePlayer.initPlayer(npc.uuid, "") {
             it.entityMeta.isCapeEnabled = true
             it.entityMeta.isHatEnabled = true
             it.entityMeta.isJacketEnabled = true
@@ -62,11 +77,9 @@ class NPCTask(private val npc: NPCData) {
             it.entityMeta.isLeftLegEnabled = true
 
             it.gameMode = GameMode.CREATIVE
-
-            it.customName = npc.name
-            it.isCustomNameVisible = true
-
             it.skin = PlayerSkin.fromUuid(npc.skin.toString())
+
+            it.addPassenger(passenger)
             it.teleport(npc.loc)
         }
     }
