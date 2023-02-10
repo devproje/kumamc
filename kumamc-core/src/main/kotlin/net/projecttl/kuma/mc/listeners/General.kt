@@ -1,5 +1,6 @@
 package net.projecttl.kuma.mc.listeners
 
+import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import net.minestom.server.MinecraftServer
 import net.minestom.server.event.Event
@@ -34,8 +35,12 @@ object Listener {
         }
 
         node.addListener(PlayerSpawnEvent::class.java) { event ->
-            if (event.player.uuid != owner) {
-                return@addListener
+            try {
+                if (event.player.uuid != owner) {
+                    return@addListener
+                }
+            } catch (ex: UninitializedPropertyAccessException) {
+                logger.warn(Component.text("owner uuid is null"))
             }
 
             event.player.isPermed = true
