@@ -3,6 +3,11 @@ plugins {
     application
 }
 
+dependencies {
+    implementation(project(":kumamc-api"))
+    implementation(project(":kumamc-core"))
+}
+
 tasks {
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions.jvmTarget = "17"
@@ -20,11 +25,11 @@ tasks {
         archiveClassifier.set("")
 
         manifest {
-            attributes["Main-Class"] = "net.projecttl.kuma.mc.CoreKt"
+            attributes["Main-Class"] = "net.projecttl.kuma.mc.runner.MainKt"
         }
     }
 }
 
 application {
-    mainClass.set("net.projecttl.kuma.mc.CoreKt")
+    mainClass.set("net.projecttl.kuma.mc.runner.MainKt")
 }
