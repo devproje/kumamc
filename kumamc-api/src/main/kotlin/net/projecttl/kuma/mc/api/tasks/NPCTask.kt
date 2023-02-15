@@ -63,7 +63,11 @@ class NPCTask(private val npc: NPCData) {
         passenger.isAutoViewable = true
 
         if (npc.type != EntityType.PLAYER) {
-            Entity(npc.type).setInstance(i, npc.loc)
+            Entity(npc.type).apply {
+                uuid = npc.uuid
+                setInstance(i, npc.loc)
+            }
+            
             return
         }
 
