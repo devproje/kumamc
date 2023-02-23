@@ -8,7 +8,7 @@ group = rootProject.group
 version = rootProject.version
 
 dependencies {
-    compileOnly(project(":kumamc-core"))
+    runtimeOnly(project(":kumamc-core"))
 }
 
 tasks {
