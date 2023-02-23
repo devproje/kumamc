@@ -28,7 +28,7 @@ subprojects {
     dependencies {
         implementation(kotlin("stdlib"))
         implementation(kotlin("reflect"))
-        implementation("org.xerial:sqlite-jdbc:3.40.0.0")
+        implementation("org.json:json:20220924")
         implementation("com.google.guava:guava:31.1-jre")
         implementation("org.jetbrains.exposed:exposed-core:0.41.1")
         implementation("org.jetbrains.exposed:exposed-jdbc:0.41.1")
