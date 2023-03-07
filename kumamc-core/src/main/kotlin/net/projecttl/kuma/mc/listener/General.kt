@@ -1,18 +1,21 @@
 package net.projecttl.kuma.mc.listener
 
 import net.minestom.server.MinecraftServer
+import net.minestom.server.event.Event
+import net.minestom.server.event.EventNode
+import net.minestom.server.event.player.PlayerLoginEvent
 import net.minestom.server.instance.AnvilLoader
 import net.minestom.server.instance.block.Block
 import net.minestom.server.utils.NamespaceID
 import net.minestom.server.world.DimensionType
 import net.projecttl.kuma.mc.instance
-import net.projecttl.kuma.mc.util.PropLoader
+import net.projecttl.kuma.mc.prop
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.math.min
 
 object General {
-    fun run() {
+    fun run(node: EventNode<Event>) {
         val dim = DimensionType.builder(NamespaceID.from("fullbright"))
             .ambientLight(10000F)
             .height(416)
@@ -21,8 +24,8 @@ object General {
             .build()
         MinecraftServer.getDimensionTypeManager().addDimension(dim)
         instance = MinecraftServer.getInstanceManager().createInstanceContainer(dim)
-        if (Files.exists(Path.of("./${PropLoader.world}"))) {
-            instance.chunkLoader = AnvilLoader(PropLoader.world)
+        if (Files.exists(Path.of("./${prop.world}"))) {
+            instance.chunkLoader = AnvilLoader(prop.world)
         } else {
             instance.setGenerator {
                 val start = it.absoluteStart()
@@ -35,6 +38,10 @@ object General {
                     }
                 }
             }
+        }
+
+        node.addListener(PlayerLoginEvent::class.java) {
+            it.player
         }
     }
 }
