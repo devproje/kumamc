@@ -16,9 +16,8 @@ import net.projecttl.kuma.mc.util.ProxyType
 lateinit var prop: Props
 lateinit var instance: InstanceContainer
 
-val logger = MinecraftServer.LOGGER
-
-var spawn: Pos? = null
+val logger = MinecraftServer.LOGGER!!
+var spawn = Pos(0.5, 40.0, 0.5, 0F, 0F)
 
 class KumaCore {
     private val server = MinecraftServer.init()

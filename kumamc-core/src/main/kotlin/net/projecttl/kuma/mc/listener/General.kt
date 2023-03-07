@@ -55,12 +55,7 @@ object General {
 
         node.addListener(PlayerLoginEvent::class.java) { event ->
             event.setSpawningInstance(instance)
-            if (spawn == null) {
-                event.player.respawnPoint = Pos(0.5, 40.0, 0.5, 0F, 0F)
-                return@addListener
-            }
-
-            event.player.respawnPoint = spawn!!
+            event.player.respawnPoint = spawn
         }
 
         node.addListener(PlayerSpawnEvent::class.java) { event ->
