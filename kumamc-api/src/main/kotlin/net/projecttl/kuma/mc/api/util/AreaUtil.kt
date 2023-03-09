@@ -1,9 +1,9 @@
 package net.projecttl.kuma.mc.api.util
 
+import net.minestom.server.coordinate.Pos
 import net.minestom.server.coordinate.Vec
-import net.minestom.server.entity.Player
 
-open class AreaUtil(private val area: Pair<Vec, Vec>, private val height: Boolean) {
+open class AreaUtil(private val area: Pair<Vec, Vec>, private val height: Boolean = false) {
     private fun swapNumber(pos1: Double, pos2: Double): Pair<Double, Double> {
         if (pos1 < pos2) {
             return Pair(pos1, pos2)
@@ -21,12 +21,12 @@ open class AreaUtil(private val area: Pair<Vec, Vec>, private val height: Boolea
         return false
     }
 
-    fun Player.inArea(): Boolean {
-        if (height && !check(position.y, area.first.y, area.second.y)) {
+    fun Pos.inArea(): Boolean {
+        if (height && !check(y, area.first.y, area.second.y)) {
             return false
         }
 
-        if (check(position.x, area.first.x, area.second.x) && check(position.z, area.first.z, area.second.z)) {
+        if (check(x, area.first.x, area.second.x) && check(z, area.first.z, area.second.z)) {
             return true
         }
 

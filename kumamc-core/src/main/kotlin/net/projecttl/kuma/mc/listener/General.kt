@@ -9,15 +9,17 @@ import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
 import net.minestom.server.event.player.PlayerCommandEvent
 import net.minestom.server.event.player.PlayerLoginEvent
+import net.minestom.server.event.player.PlayerMoveEvent
 import net.minestom.server.event.player.PlayerSpawnEvent
 import net.minestom.server.instance.AnvilLoader
 import net.minestom.server.instance.block.Block
 import net.minestom.server.utils.NamespaceID
 import net.minestom.server.world.DimensionType
+import net.projecttl.kuma.mc.api.spawn
+import net.projecttl.kuma.mc.api.util.AreaUtil
 import net.projecttl.kuma.mc.instance
 import net.projecttl.kuma.mc.logger
 import net.projecttl.kuma.mc.prop
-import net.projecttl.kuma.mc.spawn
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.math.min
@@ -55,7 +57,12 @@ object General {
 
         node.addListener(PlayerLoginEvent::class.java) { event ->
             event.setSpawningInstance(instance)
-            event.player.respawnPoint = spawn
+            if (spawn == null) {
+                event.player.respawnPoint = Pos(0.5, 40.0, 0.5, 0F, 0F)
+                return@addListener
+            }
+
+            event.player.respawnPoint = spawn!!.loc
         }
 
         node.addListener(PlayerSpawnEvent::class.java) { event ->
@@ -64,6 +71,19 @@ object General {
             }
 
             event.player.gameMode = GameMode.ADVENTURE
+        }
+
+        node.addListener(PlayerMoveEvent::class.java) { event ->
+            if (spawn == null) {
+                return@addListener
+            }
+
+            AreaUtil(spawn!!.area).apply {
+                if (!event.newPosition.inArea()) {
+                    event.isCancelled = true
+                    return@addListener
+                }
+            }
         }
     }
 }
