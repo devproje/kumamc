@@ -84,6 +84,11 @@ object General {
                     return@addListener
                 }
             }
+
+            if (spawn!!.height != null) {
+                event.player.teleport(spawn!!.loc)
+                return@addListener
+            }
         }
     }
 }
