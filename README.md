@@ -20,8 +20,6 @@ dependencies {
 
 # Functions
 - Area spawn [O]
-- Elevator [X]
-- Station [X]
 - Area utility [O]
 - GUI creator [X]
 - Permission [X]
