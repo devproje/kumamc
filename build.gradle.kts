@@ -28,12 +28,12 @@ subprojects {
     dependencies {
         implementation(kotlin("stdlib"))
         implementation(kotlin("reflect"))
-        implementation("org.xerial:sqlite-jdbc:3.40.0.0")
+        implementation("org.xerial:sqlite-jdbc:3.40.1.0")
         implementation("com.google.guava:guava:31.1-jre")
         implementation("org.jetbrains.exposed:exposed-core:0.41.1")
         implementation("org.jetbrains.exposed:exposed-jdbc:0.41.1")
-        implementation("net.kyori:adventure-text-minimessage:4.12.0")
-        implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.19.0")
+        implementation("net.kyori:adventure-text-minimessage:4.13.0")
+        implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.20.0")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
         implementation(dependencyNotation = "com.github.Minestom.Minestom:Minestom:-SNAPSHOT")
     }

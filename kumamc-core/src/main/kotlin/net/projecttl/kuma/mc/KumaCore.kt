@@ -3,7 +3,6 @@ package net.projecttl.kuma.mc
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import net.minestom.server.MinecraftServer
-import net.minestom.server.coordinate.Pos
 import net.minestom.server.extras.MojangAuth
 import net.minestom.server.extras.bungee.BungeeCordProxy
 import net.minestom.server.extras.velocity.VelocityProxy
@@ -38,7 +37,7 @@ class KumaCore {
 
         ProxyType.VELOCITY -> {
             if (prop.secret == "") {
-                throw NullPointerException()
+                throw NullPointerException("velocity secret can't be null")
             }
 
             VelocityProxy.enable(prop.secret)
