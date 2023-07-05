@@ -1,9 +1,11 @@
 plugins {
-    kotlin("jvm") version "1.8.10"
+    kotlin("jvm") version "1.8.21"
 }
 
+val exposed_version: String by project
+
 group = "net.projecttl"
-version = "1.0.0-beta.7"
+version = "1.0.0-beta.8"
 
 allprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
@@ -28,13 +30,14 @@ subprojects {
     dependencies {
         implementation(kotlin("stdlib"))
         implementation(kotlin("reflect"))
-        implementation("org.xerial:sqlite-jdbc:3.40.0.0")
+        implementation("org.xerial:sqlite-jdbc:3.42.0.0")
         implementation("com.google.guava:guava:31.1-jre")
-        implementation("org.jetbrains.exposed:exposed-core:0.41.1")
-        implementation("org.jetbrains.exposed:exposed-jdbc:0.41.1")
+        implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
+        implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
         implementation("net.kyori:adventure-text-minimessage:4.12.0")
         implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.19.0")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-        implementation(dependencyNotation = "com.github.Minestom.Minestom:Minestom:-SNAPSHOT")
+        implementation("dev.hollowcube:minestom-ce:438338381e")
+//        implementation("com.github.Minestom.Minestom:Minestom:-SNAPSHOT")
     }
 }
